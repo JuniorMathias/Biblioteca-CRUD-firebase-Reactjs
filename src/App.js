@@ -1,7 +1,7 @@
 import { db } from './firebaseConnection';
 import './app.css'
 import { useState } from 'react';
-import { doc, setDoc, collection, addDoc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
+import { doc, setDoc, collection, addDoc, getDoc, getDocs, updateDoc, deleteDoc } from 'firebase/firestore';
 
 function App() {
   const [titulo, setTitulo] = useState('');
@@ -78,7 +78,16 @@ function App() {
       alert('deu error ao atualizar')
     })
     }
-
+  async function excluirPost(id){
+    const docRef = doc(db, "posts", id)
+    await deleteDoc(docRef)
+    .then(() => {
+      alert("Deletado com sucessso");
+    })
+    .catch((error) => {
+      alert("Erro ao Deletar" + error)
+    })
+  }
   return (
     <div>
       <h2>hello world</h2>
@@ -115,7 +124,8 @@ function App() {
             <li key={post.id}>
               <strong>ID: {post.id}</strong> <br/>
               <span>Titulo: {post.titulo}</span> <br/>
-              <span>Autlor: {post.autor} </span> <br/><br/>
+              <span>Autlor: {post.autor} </span> <br/>
+              <button onClick={() => excluirPost(post.id)}>Excluir</button>
             </li>
           )
         })}
