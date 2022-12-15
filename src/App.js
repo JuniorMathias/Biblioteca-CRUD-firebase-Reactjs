@@ -8,6 +8,8 @@ function App() {
   const [autor, setAutor] = useState('');
   const [idPost, setIdPost] = useState('');
   const [post, setPosts] = useState([]);
+  const [mostrarConteudo, setMostrarConteudo] = useState(false)
+  
   useEffect(() => {
     async function loadPosts(){
       const unsub = onSnapshot(collection(db, "posts"), (snapshot) => {
@@ -31,9 +33,14 @@ function App() {
       autor: autor,
     })
     .then(() => {
-        setAutor('');
-        setTitulo('');
-        alert("Dados Registrados no Banco");
+        if(titulo.length === 0  && autor.length === 0){
+          alert("vazio");
+        }else{
+          setAutor('');
+          setTitulo('');
+          alert("Dados Registrados no Banco");
+        }
+        
       })
       .catch((error) => {
         alert("Gerou Erro" + error);
@@ -52,6 +59,7 @@ function App() {
           autor: doc.data().autor,
         })
       })
+      setMostrarConteudo(true)
       setPosts(lista);
     })
     .catch((error) => {
@@ -90,13 +98,17 @@ function App() {
       <div className='container'>
       <div className='inputs'>
       
-      <h2>Blibioteca Online</h2>  
+      <h2>Biblioteca Online</h2>  
+      { mostrarConteudo ?
+      <>
       <label>ID do Livro:</label>
       <input
         placeholder='Digite o ID do Livro'
         value={idPost}
         onChange={(e) => setIdPost(e.target.value)}
       /><br/>
+      </>
+      : null }
 
         <label>Titulo do Livro:</label>
         <input 
@@ -119,8 +131,9 @@ function App() {
       <div className='buttons'>
       <button onClick={handleAdd}>Cadastrar</button>
       <button onClick={buscarPost}>Buscar</button>
-      <button onClick={editarPost}>Atualizar Post</button>
+      <button onClick={editarPost}>Atualizar Livro</button>
       </div>
+    { mostrarConteudo ?
       <div className='resultados'>
       <ul>
         {post.map((post) => {
@@ -133,8 +146,10 @@ function App() {
             </li>
           )
         })}
+        
       </ul>
       </div>
+      : null }
       </div>
     </div>
   );
