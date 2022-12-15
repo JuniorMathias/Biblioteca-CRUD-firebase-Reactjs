@@ -1,7 +1,7 @@
 import { db } from './firebaseConnection';
 import './app.css'
 import { useState, useEffect } from 'react';
-import { doc, setDoc, collection, addDoc, getDoc, getDocs, updateDoc, deleteDoc, onSnapshot  } from 'firebase/firestore';
+import { doc,collection, addDoc, getDocs, updateDoc, deleteDoc, onSnapshot  } from 'firebase/firestore';
 
 function App() {
   const [titulo, setTitulo] = useState('');
@@ -26,16 +26,6 @@ function App() {
   }, []);
 
   async function handleAdd(){
-    // await setDoc(doc(db, "posts", "12345"), {
-    //   titulo: titulo,
-    //   autor: autor,
-    // })
-    // .then(() => {
-    //   alert("Dados Registrados no Banco");
-    // })
-    // .catch((error) => {
-    //   alert("Gerou Erro" + error);
-    // })
     await addDoc(collection(db, "posts"), {
       titulo: titulo,
       autor: autor,
@@ -51,15 +41,6 @@ function App() {
     
   }
   async function buscarPost(){
-    // const postRef = doc(db, "posts", "12345");
-    // await getDoc(postRef)
-    // .then((snapshot) =>{
-    //   setAutor(snapshot.data().autor)
-    //   setTitulo(snapshot.data().titulo)
-    // })
-    // .catch(() =>{
-    //   alert("Erro ao buscar")
-    // })
     const postRef = collection(db, "posts");
     await getDocs(postRef)
     .then((snapshot) => {
@@ -104,35 +85,43 @@ function App() {
     })
   }
   return (
-    <div>
-      <h2>hello world</h2>
+    <div className='global'>
+      
       <div className='container'>
-      <label>ID do Post:</label><br/>
+      <div className='inputs'>
+      
+      <h2>Blibioteca Online</h2>  
+      <label>ID do Livro:</label>
       <input
-        placeholder='Digite o ID do Post'
+        placeholder='Digite o ID do Livro'
         value={idPost}
         onChange={(e) => setIdPost(e.target.value)}
-      />
+      /><br/>
 
-        <label>Titulo:</label>
-        <textarea 
+        <label>Titulo do Livro:</label>
+        <input 
           type="text"
           placeholder='Digite o Titulo'
           value={titulo}
           onChange={(e) => setTitulo(e.target.value)}
-        />
+        /><br/>
 
-      <label>Autor</label>
+      <label>Autor do Livro</label><br/>
+      
       <input
         type="text"
-        placeholder='Autor do Post'
+        placeholder='Autor do Livro'
         value={autor}
         onChange={(e) => setAutor(e.target.value)}
-      />
+      /><br/>
+      </div>
+      
+      <div className='buttons'>
       <button onClick={handleAdd}>Cadastrar</button>
-      <button onClick={buscarPost}>Buscar</button><br/>
+      <button onClick={buscarPost}>Buscar</button>
       <button onClick={editarPost}>Atualizar Post</button>
-
+      </div>
+      <div className='resultados'>
       <ul>
         {post.map((post) => {
           return(
@@ -145,6 +134,7 @@ function App() {
           )
         })}
       </ul>
+      </div>
       </div>
     </div>
   );
