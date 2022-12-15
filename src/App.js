@@ -131,15 +131,18 @@ function App() {
       <div className='buttons'>
       <button onClick={handleAdd}>Cadastrar</button>
       <button onClick={buscarPost}>Buscar</button>
+      { mostrarConteudo ?
       <button onClick={editarPost}>Atualizar Livro</button>
+      : null }
       </div>
     { mostrarConteudo ?
       <div className='resultados'>
+        <h2>Livros Cadastrados</h2>
       <ul>
         {post.map((post) => {
           return(
             <li key={post.id}>
-              <strong>ID: {post.id}</strong> <br/>
+              <strong>ID do Livro: {post.id}</strong> <br/>
               <span>Titulo: {post.titulo}</span> <br/>
               <span>Autlor: {post.autor} </span> <br/>
               <button onClick={() => excluirPost(post.id)}>Excluir</button>
